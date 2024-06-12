@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Component
@@ -27,9 +28,9 @@ public class AccountPortImpl implements AccountPort {
     }
 
     @Override
-    public Optional<Account> getAccount(Long id) {
+    public Optional<Account> getAccount(UUID id) {
         var account = accountRepository.findById(id).orElse(null);
-        return account != null ? Optional.of(Account.builder().id(account.getId()).documentNumber(account.getDocumentNumber()).build()) :
+        return account != null ? Optional.of(Account.builder().id(account.getId().toString()).documentNumber(account.getDocumentNumber()).build()) :
                 Optional.empty();
     }
 }

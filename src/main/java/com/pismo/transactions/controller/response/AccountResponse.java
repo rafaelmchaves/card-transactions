@@ -9,7 +9,7 @@ import lombok.Getter;
 public class AccountResponse {
 
     @JsonProperty("account_id")
-    private Long id;
+    private String id;
 
     @JsonProperty("document_number")
     private String documentNumber;

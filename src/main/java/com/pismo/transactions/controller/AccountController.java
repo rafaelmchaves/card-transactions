@@ -23,7 +23,7 @@ public class AccountController {
     }
 
     @GetMapping("/accounts/{accountId}")
-    public ResponseEntity<AccountResponse> getAccount(@PathVariable Long accountId) {
+    public ResponseEntity<AccountResponse> getAccount(@PathVariable String accountId) {
         final var account = this.accountService.getAccount(accountId);
         return ResponseEntity.ok(AccountResponse.builder().id(accountId).documentNumber(account.getDocumentNumber()).build());
     }

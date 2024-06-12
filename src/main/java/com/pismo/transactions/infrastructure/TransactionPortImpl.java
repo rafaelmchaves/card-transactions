@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Component
@@ -24,7 +25,7 @@ public class TransactionPortImpl implements TransactionPort {
                         .operationTypeJpaEntity(
                                 OperationTypeJpaEntity.builder().id(transaction.getOperationType().getId()).build())
                         .eventDate(LocalDateTime.now(ZoneOffset.UTC))
-                        .account(AccountJpaEntity.builder().id(transaction.getAccount().getId()).build())
+                        .account(AccountJpaEntity.builder().id(UUID.fromString(transaction.getAccount().getId())).build())
                         .build());
         return null;
     }

@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class Account {
 
-    private Long id;
+    private String id;
     private String documentNumber;
 
 }

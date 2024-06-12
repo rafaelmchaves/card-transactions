@@ -6,6 +6,8 @@ import com.pismo.transactions.domain.ports.TransactionPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 @Service
 public class TransactionService {
@@ -16,7 +18,7 @@ public class TransactionService {
 
     public Transaction createTransaction(Transaction transaction) {
 
-        accountPort.getAccount(transaction.getAccount().getId())
+        accountPort.getAccount(UUID.fromString(transaction.getAccount().getId()))
                 .orElseThrow(() -> new RuntimeException("It was not possible to find the account"));
 
         //TODO find the operational type, if not find, throw an exception

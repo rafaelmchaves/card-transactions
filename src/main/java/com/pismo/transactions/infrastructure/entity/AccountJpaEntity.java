@@ -2,8 +2,11 @@ package com.pismo.transactions.infrastructure.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Builder
 @Getter
@@ -14,9 +17,14 @@ import java.time.LocalDateTime;
 public class AccountJpaEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //TODO maybe change to UUID
-    private Long id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "ID", updatable = false, nullable = false)
+    @ColumnDefault("random_uuid()")
+    private UUID id;
 
     @Column(name = "document_number")
     private String documentNumber;

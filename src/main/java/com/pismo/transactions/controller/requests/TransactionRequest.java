@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class TransactionRequest {
 
     @JsonProperty("account_id")
-    private Long accountId;
+    private String accountId;
 
     @JsonProperty("operation_type_id")
     private Integer operationTypeId;
