@@ -12,9 +12,9 @@ valor negativo, enquanto transações de pagamento são registradas com valor po
 1 - ~~Fazer da forma mais simples,controller -> service -> portImpl -> repository~~
 2 - ~~Subir H2~~
 3 - ~~Testar os endpoints de account~~
-4 - Colocar no github
-5 - Fazer o endpoint de Transaction
-6 - Testar e implementar exceções
+4 - ~~Colocar no github~~
+5 - ~~Fazer o endpoint de Transaction~~
+6 - Melhorar retorno e código. Além disso, implementar exceções
 7 - Criar testes automatizados
 8 - Rever código
 9 - Documentar com o swagger

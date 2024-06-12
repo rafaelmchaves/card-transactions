@@ -5,13 +5,15 @@ import com.pismo.transactions.domain.ports.AccountPort;
 import com.pismo.transactions.infrastructure.entity.AccountJpaEntity;
 import com.pismo.transactions.infrastructure.jpa.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Optional;
 
 @RequiredArgsConstructor
-@Service
+@Component
 public class AccountPortImpl implements AccountPort {
 
     private final AccountRepository accountRepository;
@@ -25,8 +27,9 @@ public class AccountPortImpl implements AccountPort {
     }
 
     @Override
-    public Account getAccount(Long id) {
-        var account = accountRepository.findById(id).orElse(AccountJpaEntity.builder().build());
-        return Account.builder().id(account.getId()).documentNumber(account.getDocumentNumber()).build();
+    public Optional<Account> getAccount(Long id) {
+        var account = accountRepository.findById(id).orElse(null);
+        return account != null ? Optional.of(Account.builder().id(account.getId()).documentNumber(account.getDocumentNumber()).build()) :
+                Optional.empty();
     }
 }

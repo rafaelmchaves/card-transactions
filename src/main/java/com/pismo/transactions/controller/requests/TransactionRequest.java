@@ -11,10 +11,10 @@ import java.math.BigDecimal;
 public class TransactionRequest {
 
     @JsonProperty("account_id")
-    private String accountId;
+    private Long accountId;
 
     @JsonProperty("operation_type_id")
-    private String operationTypeId;
+    private Integer operationTypeId;
 
     private BigDecimal amount;
 

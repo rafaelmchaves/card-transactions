@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @Table(name = "transactions")
 @Entity
-public class Transaction {
+public class TransactionJpaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class Transaction {
     private AccountJpaEntity account;
 
     @ManyToOne
-    private OperationType operationType;
+    private OperationTypeJpaEntity operationTypeJpaEntity;
 
     private BigDecimal amount;
     private LocalDateTime eventDate;

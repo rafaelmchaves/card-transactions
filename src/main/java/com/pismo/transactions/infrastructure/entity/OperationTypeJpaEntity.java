@@ -10,11 +10,12 @@ import lombok.Getter;
 @Getter
 @Table(name = "operation_types")
 @Entity
-public class OperationType {
+public class OperationTypeJpaEntity {
 
     @Id
-    private Long operationId;
+    private Integer id;
     private String description;
+    private Integer multiplier;
     //TODO talvez criar uma coluna dizendo se é para debitar ou creditar
 
 }
