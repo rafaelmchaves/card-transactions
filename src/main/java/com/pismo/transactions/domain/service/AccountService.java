@@ -17,6 +17,6 @@ public class AccountService {
     }
 
     public Account getAccount(Long id) {
-        return accountPort.getAccount(id);
+        return accountPort.getAccount(id).orElse(Account.builder().build());
     }
 }
