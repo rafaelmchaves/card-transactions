@@ -1,6 +1,8 @@
 package com.pismo.transactions.domain.service;
 
 import com.pismo.transactions.domain.Transaction;
+import com.pismo.transactions.domain.exceptions.AccountNotFoundException;
+import com.pismo.transactions.domain.exceptions.OperationTypeNotFoundException;
 import com.pismo.transactions.domain.ports.AccountPort;
 import com.pismo.transactions.domain.ports.OperationTypePort;
 import com.pismo.transactions.domain.ports.TransactionPort;
@@ -22,10 +24,10 @@ public class TransactionService {
     public void createTransaction(Transaction transaction) {
 
         accountPort.getAccount(UUID.fromString(transaction.getAccount().getId()))
-                .orElseThrow(() -> new RuntimeException("It was not possible to find the account"));
+                .orElseThrow(AccountNotFoundException::new);
 
         final var operationType = operationTypePort.getOperationTypeById(transaction.getOperationType().getId())
-                .orElseThrow(() -> new RuntimeException("It was not possible to find the operation type"));
+                .orElseThrow(OperationTypeNotFoundException::new);
         transaction.setOperationType(operationType);
 
         transactionPort.createTransaction(transaction);

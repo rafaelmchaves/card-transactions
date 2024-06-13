@@ -32,7 +32,7 @@ public class AccountPortImpl implements AccountPort {
     @Override
     public Optional<Account> getAccount(UUID id) {
         var account = accountRepository.findById(id).orElse(null);
-        return account != null ? Optional.of(Account.builder().id(account.getId().toString()).documentNumber(account.getDocumentNumber()).build()) :
-                Optional.empty();
+        return account != null ? Optional.of(Account.builder().id(account.getId().toString()).documentNumber(account.getDocumentNumber()).build())
+                               : Optional.empty();
     }
 }

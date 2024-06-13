@@ -21,7 +21,7 @@ public class TransactionJpaEntity {
     private AccountJpaEntity account;
 
     @ManyToOne
-    private OperationTypeJpaEntity operationTypeJpaEntity;
+    private OperationTypeJpaEntity operationType;
 
     private BigDecimal amount;
     private LocalDateTime eventDate;

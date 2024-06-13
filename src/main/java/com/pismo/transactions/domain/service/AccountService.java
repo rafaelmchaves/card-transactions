@@ -5,6 +5,7 @@ import com.pismo.transactions.domain.ports.AccountPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class AccountService {
         return account;
     }
 
-    public Account getAccount(String id) {
-        return accountPort.getAccount(UUID.fromString(id)).orElse(Account.builder().build());
+    public Optional<Account> getAccount(String id) {
+        return accountPort.getAccount(UUID.fromString(id));
     }
 }
