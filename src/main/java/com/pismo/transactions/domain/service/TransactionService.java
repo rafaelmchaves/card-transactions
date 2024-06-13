@@ -16,7 +16,7 @@ public class TransactionService {
 
     private final AccountPort accountPort;
 
-    public Transaction createTransaction(Transaction transaction) {
+    public void createTransaction(Transaction transaction) {
 
         accountPort.getAccount(UUID.fromString(transaction.getAccount().getId()))
                 .orElseThrow(() -> new RuntimeException("It was not possible to find the account"));
@@ -25,6 +25,5 @@ public class TransactionService {
 
         //TODO multiply the amount of transaction for multiplier of OperationType
         transactionPort.createTransaction(transaction);
-        return null;
     }
 }

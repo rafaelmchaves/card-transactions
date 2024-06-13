@@ -21,12 +21,14 @@ public class TransactionPortImpl implements TransactionPort {
 
     @Override
     public Transaction createTransaction(Transaction transaction) {
-        transactionRepository.save(TransactionJpaEntity.builder().amount(transaction.getAmount())
+        final var savedTransaction = transactionRepository.save(TransactionJpaEntity.builder().amount(transaction.getAmount())
                         .operationTypeJpaEntity(
                                 OperationTypeJpaEntity.builder().id(transaction.getOperationType().getId()).build())
                         .eventDate(LocalDateTime.now(ZoneOffset.UTC))
                         .account(AccountJpaEntity.builder().id(UUID.fromString(transaction.getAccount().getId())).build())
                         .build());
-        return null;
+
+        return Transaction.builder().id(savedTransaction.getId()).amount(savedTransaction.getAmount())
+                .build();
     }
 }

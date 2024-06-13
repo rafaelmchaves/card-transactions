@@ -16,6 +16,5 @@ public class OperationTypeJpaEntity {
     private Integer id;
     private String description;
     private Integer multiplier;
-    //TODO talvez criar uma coluna dizendo se é para debitar ou creditar
 
 }

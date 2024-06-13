@@ -13,8 +13,10 @@ public class AccountService {
 
     private final AccountPort accountPort;
 
-    public void createAccount(Account account) {
-        this.accountPort.save(account);
+    public Account createAccount(Account account) {
+        final String accountId = this.accountPort.save(account);
+        account.setId(accountId);
+        return account;
     }
 
     public Account getAccount(String id) {

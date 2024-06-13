@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface AccountPort {
 
-    void save(Account account);
+    String save(Account account);
 
     Optional<Account> getAccount(UUID id);
 }

@@ -16,10 +16,12 @@ public class AccountController {
     private final AccountService accountService;
 
     @PostMapping("/accounts")
-    public ResponseEntity<Void> createAccount(@RequestBody AccountRequest accountRequest) {
-        accountService.createAccount(Account.builder().documentNumber(accountRequest.getDocumentNumber()).build());
+    public ResponseEntity<AccountResponse> createAccount(@RequestBody AccountRequest accountRequest) {
+        final var account = accountService.createAccount(Account.builder().documentNumber(accountRequest.getDocumentNumber()).build());
         // TODO think about the return of the method. Should I return the id in the header or a body with the saved entity?
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(AccountResponse.builder().id(account.getId())
+                        .documentNumber(account.getDocumentNumber()).build());
     }
 
     @GetMapping("/accounts/{accountId}")
