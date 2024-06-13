@@ -1,6 +1,6 @@
-package com.pismo.transactions.infrastructure.jpa;
+package com.pismo.transactions.infrastructure.h2.jpa;
 
-import com.pismo.transactions.infrastructure.entity.AccountJpaEntity;
+import com.pismo.transactions.infrastructure.h2.entity.AccountJpaEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;

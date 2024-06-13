@@ -1,10 +1,8 @@
-package com.pismo.transactions.infrastructure.mapper;
+package com.pismo.transactions.infrastructure.h2.mapper;
 
 import com.pismo.transactions.domain.OperationType;
-import com.pismo.transactions.infrastructure.entity.OperationTypeJpaEntity;
+import com.pismo.transactions.infrastructure.h2.entity.OperationTypeJpaEntity;
 import org.mapstruct.Mapper;
-
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface OperationTypeMapper {

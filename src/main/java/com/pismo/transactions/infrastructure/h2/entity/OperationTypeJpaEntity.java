@@ -1,4 +1,4 @@
-package com.pismo.transactions.infrastructure.entity;
+package com.pismo.transactions.infrastructure.h2.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

@@ -2,10 +2,10 @@ package com.pismo.transactions.infrastructure;
 
 import com.pismo.transactions.domain.Transaction;
 import com.pismo.transactions.domain.ports.TransactionPort;
-import com.pismo.transactions.infrastructure.entity.AccountJpaEntity;
-import com.pismo.transactions.infrastructure.entity.OperationTypeJpaEntity;
-import com.pismo.transactions.infrastructure.entity.TransactionJpaEntity;
-import com.pismo.transactions.infrastructure.jpa.TransactionRepository;
+import com.pismo.transactions.infrastructure.h2.entity.AccountJpaEntity;
+import com.pismo.transactions.infrastructure.h2.entity.OperationTypeJpaEntity;
+import com.pismo.transactions.infrastructure.h2.entity.TransactionJpaEntity;
+import com.pismo.transactions.infrastructure.h2.jpa.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
