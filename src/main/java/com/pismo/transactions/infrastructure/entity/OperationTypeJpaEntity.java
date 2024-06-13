@@ -3,13 +3,14 @@ package com.pismo.transactions.infrastructure.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Builder
 @Getter
 @Table(name = "operation_types")
 @Entity
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 public class OperationTypeJpaEntity {
 
     @Id
