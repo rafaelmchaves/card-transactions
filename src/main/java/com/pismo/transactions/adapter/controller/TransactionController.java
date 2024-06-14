@@ -5,6 +5,8 @@ import com.pismo.transactions.domain.Account;
 import com.pismo.transactions.domain.OperationType;
 import com.pismo.transactions.domain.Transaction;
 import com.pismo.transactions.domain.service.TransactionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,11 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
+@Tag(name = "Transaction", description = "Transaction APIs")
 public class TransactionController {
 
     private final TransactionService transactionService;
 
     @PostMapping("/transactions")
+    @Operation(summary = "Create a new transaction for a particular account.")
     public ResponseEntity<Void> createTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
 
         transactionService.createTransaction(Transaction.builder().amount(transactionRequest.getAmount())
