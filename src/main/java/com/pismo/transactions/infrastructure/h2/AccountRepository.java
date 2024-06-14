@@ -1,9 +1,9 @@
-package com.pismo.transactions.infrastructure;
+package com.pismo.transactions.infrastructure.h2;
 
 import com.pismo.transactions.domain.Account;
 import com.pismo.transactions.domain.ports.AccountPort;
 import com.pismo.transactions.infrastructure.h2.entity.AccountJpaEntity;
-import com.pismo.transactions.infrastructure.h2.jpa.AccountRepository;
+import com.pismo.transactions.infrastructure.h2.repository.AccountJPARepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +14,9 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Component
-public class AccountPortImpl implements AccountPort {
+public class AccountRepository implements AccountPort {
 
-    private final AccountRepository accountRepository;
+    private final AccountJPARepository accountJPARepository;
 
     @Override
     public String save(Account account) {
@@ -24,14 +24,14 @@ public class AccountPortImpl implements AccountPort {
                 .creation(LocalDateTime.now(ZoneOffset.UTC))
                 .build();
 
-        final var savedAccount = this.accountRepository.save(accountJpaEntity);
+        final var savedAccount = this.accountJPARepository.save(accountJpaEntity);
 
         return savedAccount.getId().toString();
     }
 
     @Override
     public Optional<Account> getAccount(UUID id) {
-        var account = accountRepository.findById(id).orElse(null);
+        var account = accountJPARepository.findById(id).orElse(null);
         return account != null ? Optional.of(Account.builder().id(account.getId().toString()).documentNumber(account.getDocumentNumber()).build())
                                : Optional.empty();
     }

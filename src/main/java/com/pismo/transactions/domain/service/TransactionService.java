@@ -8,6 +8,7 @@ import com.pismo.transactions.domain.ports.OperationTypePort;
 import com.pismo.transactions.domain.ports.TransactionPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -21,6 +22,7 @@ public class TransactionService {
 
     private final OperationTypePort operationTypePort;
 
+    @Transactional
     public void createTransaction(Transaction transaction) {
 
         accountPort.getAccount(UUID.fromString(transaction.getAccount().getId()))
