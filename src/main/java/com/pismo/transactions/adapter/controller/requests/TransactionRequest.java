@@ -1,4 +1,4 @@
-package com.pismo.transactions.controller.requests;
+package com.pismo.transactions.adapter.controller.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

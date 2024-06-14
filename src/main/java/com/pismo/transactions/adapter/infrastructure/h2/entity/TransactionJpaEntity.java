@@ -1,4 +1,4 @@
-package com.pismo.transactions.infrastructure.h2.entity;
+package com.pismo.transactions.adapter.infrastructure.h2.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;

@@ -1,6 +1,6 @@
-package com.pismo.transactions.infrastructure.h2.repository;
+package com.pismo.transactions.adapter.infrastructure.h2.repository;
 
-import com.pismo.transactions.infrastructure.h2.entity.TransactionJpaEntity;
+import com.pismo.transactions.adapter.infrastructure.h2.entity.TransactionJpaEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

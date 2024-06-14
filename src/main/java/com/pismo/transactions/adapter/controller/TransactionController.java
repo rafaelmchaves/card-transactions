@@ -1,6 +1,6 @@
-package com.pismo.transactions.controller;
+package com.pismo.transactions.adapter.controller;
 
-import com.pismo.transactions.controller.requests.TransactionRequest;
+import com.pismo.transactions.adapter.controller.requests.TransactionRequest;
 import com.pismo.transactions.domain.Account;
 import com.pismo.transactions.domain.OperationType;
 import com.pismo.transactions.domain.Transaction;
