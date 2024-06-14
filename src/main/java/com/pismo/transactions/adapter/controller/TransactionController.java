@@ -5,6 +5,7 @@ import com.pismo.transactions.domain.Account;
 import com.pismo.transactions.domain.OperationType;
 import com.pismo.transactions.domain.Transaction;
 import com.pismo.transactions.domain.service.TransactionService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PostMapping("/transactions")
-    public ResponseEntity<Void> createTransaction(@RequestBody TransactionRequest transactionRequest) {
+    public ResponseEntity<Void> createTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
 
         transactionService.createTransaction(Transaction.builder().amount(transactionRequest.getAmount())
                 .operationType(OperationType.builder().id(transactionRequest.getOperationTypeId()).build())
