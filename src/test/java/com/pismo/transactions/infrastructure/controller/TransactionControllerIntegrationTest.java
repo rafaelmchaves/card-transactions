@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pismo.transactions.adapter.controller.requests.TransactionRequest;
 import com.pismo.transactions.adapter.infrastructure.h2.entity.AccountJpaEntity;
 import com.pismo.transactions.adapter.infrastructure.h2.repository.AccountJPARepository;
-import com.pismo.transactions.adapter.infrastructure.h2.repository.OperationTypeJPARepository;
 import com.pismo.transactions.adapter.infrastructure.h2.repository.TransactionJPARepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,9 +40,6 @@ public class TransactionControllerIntegrationTest {
 
     @Autowired
     private AccountJPARepository accountJPARepository;
-
-    @Autowired
-    private OperationTypeJPARepository operationTypeJPARepository;
 
     private AccountJpaEntity accountJpaEntity;
 
