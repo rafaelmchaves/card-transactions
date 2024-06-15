@@ -21,8 +21,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -67,16 +66,18 @@ public class TransactionRepositoryTest {
         verify(transactionJPARepository, times(1)).save(argumentCaptor.capture());
 
         final var transactionJpaEntity = argumentCaptor.getValue();
-        assertNotNull(transactionJpaEntity);
-        assertNotNull(transactionJpaEntity.getEventDate());
-        assertNotNull(transactionJpaEntity.getOperationType());
-        assertNotNull(transactionJpaEntity.getAccount());
-        assertEquals(transaction.getAmount(), transactionJpaEntity.getAmount());
-        assertEquals(transaction.getAccount().getId(), transactionJpaEntity.getAccount().getId().toString());
-        assertEquals(transaction.getOperationType().getId(), transactionJpaEntity.getOperationType().getId());
+        assertAll(() -> {
+            assertNotNull(transactionJpaEntity);
+            assertNotNull(transactionJpaEntity.getEventDate());
+            assertNotNull(transactionJpaEntity.getOperationType());
+            assertNotNull(transactionJpaEntity.getAccount());
+            assertEquals(transaction.getAmount(), transactionJpaEntity.getAmount());
+            assertEquals(transaction.getAccount().getId(), transactionJpaEntity.getAccount().getId().toString());
+            assertEquals(transaction.getOperationType().getId(), transactionJpaEntity.getOperationType().getId());
 
-        assertEquals(savedTransactionJpaEntity.getId(), savedTransaction.getId());
-        assertEquals(savedTransactionJpaEntity.getAmount(), savedTransaction.getAmount());
-        verify(transactionJPARepository, times(1)).save(transactionJpaEntity);
+            assertEquals(savedTransactionJpaEntity.getId(), savedTransaction.getId());
+            assertEquals(savedTransactionJpaEntity.getAmount(), savedTransaction.getAmount());
+            verify(transactionJPARepository, times(1)).save(transactionJpaEntity);
+        });
     }
 }

@@ -13,9 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceTest {
@@ -39,8 +38,10 @@ public class AccountServiceTest {
 
         Account createdAccount = accountService.createAccount(account);
 
-        assertEquals(account.getId(), createdAccount.getId());
-        verify(accountPort, times(1)).save(account);
+        assertAll(() -> {
+            assertEquals(account.getId(), createdAccount.getId());
+            verify(accountPort, times(1)).save(account);
+        });
     }
 
     @Test
@@ -51,10 +52,12 @@ public class AccountServiceTest {
 
         Optional<Account> foundAccount = accountService.getAccount(account.getId());
 
-        assertTrue(foundAccount.isPresent());
-        assertEquals(account.getId(), foundAccount.get().getId());
-        assertEquals(account.getDocumentNumber(), foundAccount.get().getDocumentNumber());
-        verify(accountPort, times(1)).getAccount(accountId);
+        assertAll(() -> {
+            assertTrue(foundAccount.isPresent());
+            assertEquals(account.getId(), foundAccount.get().getId());
+            assertEquals(account.getDocumentNumber(), foundAccount.get().getDocumentNumber());
+            verify(accountPort, times(1)).getAccount(accountId);
+        });
     }
 
     @Test
@@ -64,7 +67,9 @@ public class AccountServiceTest {
 
         Optional<Account> foundAccount = accountService.getAccount(account.getId());
 
-        assertTrue(foundAccount.isEmpty());
-        verify(accountPort, times(1)).getAccount(accountId);
+        assertAll(() -> {
+            assertTrue(foundAccount.isEmpty());
+            verify(accountPort, times(1)).getAccount(accountId);
+        });
     }
 }

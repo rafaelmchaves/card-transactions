@@ -60,10 +60,13 @@ public class AccountRepositoryTest {
 
         AccountJpaEntity capturedAccountJpaEntity = argumentCaptor.getValue();
 
-        assertNotNull(capturedAccountJpaEntity);
-        assertNotNull(capturedAccountJpaEntity.getCreation());
-        assertEquals(account.getDocumentNumber(), capturedAccountJpaEntity.getDocumentNumber());
-        assertEquals(accountId.toString(), savedAccountId);
+        assertAll(() -> {
+            assertNotNull(capturedAccountJpaEntity);
+            assertNotNull(capturedAccountJpaEntity.getCreation());
+            assertEquals(account.getDocumentNumber(), capturedAccountJpaEntity.getDocumentNumber());
+            assertEquals(accountId.toString(), savedAccountId);
+        });
+
     }
 
     @Test
@@ -72,10 +75,12 @@ public class AccountRepositoryTest {
 
         Optional<Account> foundAccount = accountRepository.getAccount(accountId);
 
-        assertTrue(foundAccount.isPresent());
-        assertEquals(accountId.toString(), foundAccount.get().getId());
-        assertEquals(account.getDocumentNumber(), foundAccount.get().getDocumentNumber());
-        verify(accountJPARepository, times(1)).findById(any(UUID.class));
+        assertAll(() -> {
+            assertTrue(foundAccount.isPresent());
+            assertEquals(accountId.toString(), foundAccount.get().getId());
+            assertEquals(account.getDocumentNumber(), foundAccount.get().getDocumentNumber());
+            verify(accountJPARepository, times(1)).findById(any(UUID.class));
+        });
     }
 
     @Test

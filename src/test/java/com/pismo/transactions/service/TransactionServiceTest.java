@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -67,10 +68,12 @@ public class TransactionServiceTest {
         Mockito.verify(transactionPort, Mockito.times(1)).createTransaction(transactionArgumentCaptor.capture());
         var transactionParam = transactionArgumentCaptor.getValue();
 
-        Assertions.assertEquals(transaction.getAmount(), transactionParam.getAmount());
-        Assertions.assertEquals(1, transactionParam.getOperationType().getMultiplier());
-        Assertions.assertEquals(4, transactionParam.getOperationType().getId());
-        Assertions.assertEquals(transaction.getAccount().getId(), transactionParam.getAccount().getId());
+        assertAll(() -> {
+            Assertions.assertEquals(transaction.getAmount(), transactionParam.getAmount());
+            Assertions.assertEquals(1, transactionParam.getOperationType().getMultiplier());
+            Assertions.assertEquals(4, transactionParam.getOperationType().getId());
+            Assertions.assertEquals(transaction.getAccount().getId(), transactionParam.getAccount().getId());
+        });
 
     }
 
@@ -81,9 +84,11 @@ public class TransactionServiceTest {
 
         assertThrows(AccountNotFoundException.class, () -> transactionService.createTransaction(transaction));
 
-        verify(accountPort, times(1)).getAccount(UUID.fromString(transaction.getAccount().getId()));
-        verify(operationTypePort, never()).getOperationTypeById(transaction.getOperationType().getId());
-        verify(transactionPort, never()).createTransaction(any(Transaction.class));
+        assertAll(() -> {
+            verify(accountPort, times(1)).getAccount(UUID.fromString(transaction.getAccount().getId()));
+            verify(operationTypePort, never()).getOperationTypeById(transaction.getOperationType().getId());
+            verify(transactionPort, never()).createTransaction(any(Transaction.class));
+        });
     }
 
     @Test

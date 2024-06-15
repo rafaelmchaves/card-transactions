@@ -14,8 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,11 +46,13 @@ public class OperationTypeRepositoryTest {
 
         Optional<OperationType> foundOperationType = operationTypeRepository.getOperationTypeById(1);
 
-        assertTrue(foundOperationType.isPresent());
-        assertEquals(operationType.getId(), foundOperationType.get().getId());
-        assertEquals(operationType.getDescription(), foundOperationType.get().getDescription());
-        verify(operationTypeJPARepository, times(1)).findById(operationType.getId());
-        verify(operationTypeMapper, times(1)).convert(any(OperationTypeJpaEntity.class));
+        assertAll(() -> {
+            assertTrue(foundOperationType.isPresent());
+            assertEquals(operationType.getId(), foundOperationType.get().getId());
+            assertEquals(operationType.getDescription(), foundOperationType.get().getDescription());
+            verify(operationTypeJPARepository, times(1)).findById(operationType.getId());
+            verify(operationTypeMapper, times(1)).convert(any(OperationTypeJpaEntity.class));
+        });
     }
 
     @Test

@@ -3,7 +3,6 @@ package com.pismo.transactions.infrastructure.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pismo.transactions.adapter.controller.requests.AccountRequest;
 import com.pismo.transactions.adapter.infrastructure.h2.repository.AccountJPARepository;
-import com.pismo.transactions.domain.service.AccountService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +30,6 @@ public class AccountControllerIntegrationTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    private AccountService accountService;
 
     @Autowired
     private AccountJPARepository accountJPARepository;
