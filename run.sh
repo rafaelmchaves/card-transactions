@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Build the Spring Boot application JAR file
-echo "Building the Spring Boot application..."
+echo "Building the Spring Boot application and generate jar..."
 mvn clean package
 
 # Build and start the containers using Docker Compose
