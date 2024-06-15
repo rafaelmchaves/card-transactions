@@ -30,7 +30,7 @@ public class TransactionController {
                 .operationType(OperationType.builder().id(transactionRequest.getOperationTypeId()).build())
                         .account(Account.builder().id(transactionRequest.getAccountId()).build())
                 .build());
-        return ResponseEntity.status(HttpStatus.CREATED).build(); //TODO think about the return of the method. Should I return the id in the header or a body with the saved entity?
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }
