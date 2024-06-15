@@ -6,9 +6,9 @@ import com.pismo.transactions.domain.exceptions.OperationTypeNotFoundException;
 import com.pismo.transactions.domain.ports.AccountPort;
 import com.pismo.transactions.domain.ports.OperationTypePort;
 import com.pismo.transactions.domain.ports.TransactionPort;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 

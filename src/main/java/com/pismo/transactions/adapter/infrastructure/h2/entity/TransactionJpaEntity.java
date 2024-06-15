@@ -1,8 +1,7 @@
 package com.pismo.transactions.adapter.infrastructure.h2.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,6 +10,8 @@ import java.time.LocalDateTime;
 @Builder
 @Table(name = "transactions")
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TransactionJpaEntity {
 
     @Id
