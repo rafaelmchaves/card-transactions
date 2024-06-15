@@ -30,11 +30,11 @@ public class AccountServiceTest {
 
     @BeforeEach
     public void setUp() {
-        account = Account.builder().id(UUID.randomUUID().toString()).build();
+        account = Account.builder().id(UUID.randomUUID().toString()).documentNumber("21242114").build();
     }
 
     @Test
-    public void testCreateAccount() {
+    public void createAccount_accountData_accountCreated() {
         when(accountPort.save(account)).thenReturn(account.getId());
 
         Account createdAccount = accountService.createAccount(account);
@@ -44,7 +44,7 @@ public class AccountServiceTest {
     }
 
     @Test
-    public void testGetAccount() {
+    public void getAccount_fromExistedId_accountReturned() {
 
         UUID accountId = UUID.fromString(account.getId());
         when(accountPort.getAccount(accountId)).thenReturn(Optional.of(account));
@@ -53,11 +53,12 @@ public class AccountServiceTest {
 
         assertTrue(foundAccount.isPresent());
         assertEquals(account.getId(), foundAccount.get().getId());
+        assertEquals(account.getDocumentNumber(), foundAccount.get().getDocumentNumber());
         verify(accountPort, times(1)).getAccount(accountId);
     }
 
     @Test
-    public void testGetAccount_NotFound() {
+    public void getAccount_fromNotExistedId_emptyOptionalReturned() {
         UUID accountId = UUID.fromString(account.getId());
         when(accountPort.getAccount(accountId)).thenReturn(Optional.empty());
 
