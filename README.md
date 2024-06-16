@@ -47,7 +47,7 @@ Since it's a small project I didn't create many layers and a complex structure o
                   | -- repository
                   | -- entity
 -- domain
-     | -- service
+     | -- usecases
      | -- ports
      
  ```
