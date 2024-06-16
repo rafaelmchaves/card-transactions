@@ -63,6 +63,16 @@ of how to create and find an account.
 If in the future, we want to create a specific microservice for account, so we change the implementation of `AccountPort` from `AccountRepository` to `AccountRest`. But the interface don't change.
 We continue call the getAccount interface method in the domain. So, if the change was in the infrastructure technology, so the domain should not change, in theory.
 
+## Database
+
+I created an attribute called `multiplier` in the `operation_types` table to make the code easier to maintain.
+So if it's a debit transaction, the multiplier is -1, if it's not, it's 1. I think it's great to have this in the database 
+because you don't have to change the code and deploy the code if you create a new type of operation.
+
+For example, if tomorrow it is necessary to add the cashback operation type, simply insert this sql below into the database:
+```
+insert into operation_types (id, description, multiplier) values (5, 'CASHBACK',  1)
+```
 
 ## H2
 
