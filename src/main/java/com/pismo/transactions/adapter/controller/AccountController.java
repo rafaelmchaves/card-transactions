@@ -4,7 +4,7 @@ import com.pismo.transactions.adapter.controller.requests.AccountRequest;
 import com.pismo.transactions.adapter.controller.response.AccountResponse;
 import com.pismo.transactions.common.exceptions.ErrorMessage;
 import com.pismo.transactions.domain.Account;
-import com.pismo.transactions.domain.service.AccountService;
+import com.pismo.transactions.domain.usecases.AccountUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Account", description = "Account APIs")
 public class AccountController {
 
-    private final AccountService accountService;
+    private final AccountUseCase accountUseCase;
 
     @PostMapping("/accounts")
     @Operation(summary = "Create a new account,so it would be possible to do a transaction")
@@ -32,7 +32,7 @@ public class AccountController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
     })
     public ResponseEntity<AccountResponse> createAccount(@Valid @RequestBody AccountRequest accountRequest) {
-        final var account = accountService.createAccount(Account.builder().documentNumber(accountRequest.getDocumentNumber()).build());
+        final var account = accountUseCase.createAccount(Account.builder().documentNumber(accountRequest.getDocumentNumber()).build());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(AccountResponse.builder().id(account.getId())
                         .documentNumber(account.getDocumentNumber()).build());
@@ -45,7 +45,7 @@ public class AccountController {
             @ApiResponse(responseCode = "204", description = "No content was found for this account id", content = {})
     })
     public ResponseEntity<AccountResponse> getAccount(@PathVariable String accountId) {
-        final var accountOptional = this.accountService.getAccount(accountId);
+        final var accountOptional = this.accountUseCase.getAccount(accountId);
         return accountOptional.map(account ->
                         ResponseEntity.ok(
                                 AccountResponse.builder().id(account.getId()).documentNumber(account.getDocumentNumber()).build()))

@@ -1,4 +1,4 @@
-package com.pismo.transactions.domain.service;
+package com.pismo.transactions.domain.usecases;
 
 import com.pismo.transactions.domain.Transaction;
 import com.pismo.transactions.domain.exceptions.AccountNotFoundException;
@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class TransactionService {
+public class TransactionUseCase {
 
     private final TransactionPort transactionPort;
 

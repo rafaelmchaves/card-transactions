@@ -1,4 +1,4 @@
-package com.pismo.transactions.service;
+package com.pismo.transactions.usecases;
 
 import com.pismo.transactions.domain.Account;
 import com.pismo.transactions.domain.OperationType;
@@ -8,7 +8,7 @@ import com.pismo.transactions.domain.exceptions.OperationTypeNotFoundException;
 import com.pismo.transactions.domain.ports.AccountPort;
 import com.pismo.transactions.domain.ports.OperationTypePort;
 import com.pismo.transactions.domain.ports.TransactionPort;
-import com.pismo.transactions.domain.service.TransactionService;
+import com.pismo.transactions.domain.usecases.TransactionUseCase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,10 +29,10 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TransactionServiceTest {
+public class TransactionUseCaseTest {
 
     @InjectMocks
-    private TransactionService transactionService;
+    private TransactionUseCase transactionUseCase;
 
     @Mock
     private TransactionPort transactionPort;
@@ -61,7 +61,7 @@ public class TransactionServiceTest {
         Mockito.when(operationTypePort.getOperationTypeById(transaction.getOperationType().getId()))
                 .thenReturn(getOperationType());
 
-        transactionService.createTransaction(transaction);
+        transactionUseCase.createTransaction(transaction);
 
         final var transactionArgumentCaptor = ArgumentCaptor.forClass(Transaction.class);
 
@@ -82,7 +82,7 @@ public class TransactionServiceTest {
 
         when(accountPort.getAccount(UUID.fromString(transaction.getAccount().getId()))).thenReturn(Optional.empty());
 
-        assertThrows(AccountNotFoundException.class, () -> transactionService.createTransaction(transaction));
+        assertThrows(AccountNotFoundException.class, () -> transactionUseCase.createTransaction(transaction));
 
         assertAll(() -> {
             verify(accountPort, times(1)).getAccount(UUID.fromString(transaction.getAccount().getId()));
@@ -96,7 +96,7 @@ public class TransactionServiceTest {
         when(accountPort.getAccount(UUID.fromString(transaction.getAccount().getId()))).thenReturn(getAccount());
         when(operationTypePort.getOperationTypeById(transaction.getOperationType().getId())).thenReturn(Optional.empty());
 
-        assertThrows(OperationTypeNotFoundException.class, () -> transactionService.createTransaction(transaction));
+        assertThrows(OperationTypeNotFoundException.class, () -> transactionUseCase.createTransaction(transaction));
 
         verify(accountPort, times(1)).getAccount(UUID.fromString(transaction.getAccount().getId()));
         verify(operationTypePort, times(1)).getOperationTypeById(transaction.getOperationType().getId());

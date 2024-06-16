@@ -1,4 +1,4 @@
-package com.pismo.transactions.domain.service;
+package com.pismo.transactions.domain.usecases;
 
 import com.pismo.transactions.domain.Account;
 import com.pismo.transactions.domain.ports.AccountPort;
@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class AccountService {
+public class AccountUseCase {
 
     private final AccountPort accountPort;
 

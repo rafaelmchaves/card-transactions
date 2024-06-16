@@ -1,8 +1,8 @@
-package com.pismo.transactions.service;
+package com.pismo.transactions.usecases;
 
 import com.pismo.transactions.domain.Account;
 import com.pismo.transactions.domain.ports.AccountPort;
-import com.pismo.transactions.domain.service.AccountService;
+import com.pismo.transactions.domain.usecases.AccountUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AccountServiceTest {
+public class AccountUseCaseTest {
 
     @Mock
     private AccountPort accountPort;
 
     @InjectMocks
-    private AccountService accountService;
+    private AccountUseCase accountUseCase;
 
     private Account account;
 
@@ -36,7 +36,7 @@ public class AccountServiceTest {
     public void createAccount_accountData_accountCreated() {
         when(accountPort.save(account)).thenReturn(account.getId());
 
-        Account createdAccount = accountService.createAccount(account);
+        Account createdAccount = accountUseCase.createAccount(account);
 
         assertAll(() -> {
             assertEquals(account.getId(), createdAccount.getId());
@@ -50,7 +50,7 @@ public class AccountServiceTest {
         UUID accountId = UUID.fromString(account.getId());
         when(accountPort.getAccount(accountId)).thenReturn(Optional.of(account));
 
-        Optional<Account> foundAccount = accountService.getAccount(account.getId());
+        Optional<Account> foundAccount = accountUseCase.getAccount(account.getId());
 
         assertAll(() -> {
             assertTrue(foundAccount.isPresent());
@@ -65,7 +65,7 @@ public class AccountServiceTest {
         UUID accountId = UUID.fromString(account.getId());
         when(accountPort.getAccount(accountId)).thenReturn(Optional.empty());
 
-        Optional<Account> foundAccount = accountService.getAccount(account.getId());
+        Optional<Account> foundAccount = accountUseCase.getAccount(account.getId());
 
         assertAll(() -> {
             assertTrue(foundAccount.isEmpty());
