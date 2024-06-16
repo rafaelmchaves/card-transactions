@@ -1,4 +1,4 @@
-# Use an official OpenJDK runtime as a parent image
+#Use the OpenJDK 17 as a parent image
 FROM openjdk:17
 
 # Set the working directory inside the container

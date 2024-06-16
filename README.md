@@ -7,7 +7,9 @@ Purchase and withdrawal type transactions are recorded with a negative value, wh
 # How to run the application
 
 ## Pre-requisites:
-It's required java 17, maven and docker
+It's required java 17, maven to run the project.
+
+These instructions below require Docker to execute.
 
 ## Run
 I included a run.sh file in the project root folder.
@@ -26,6 +28,14 @@ The run.sh file execute ```mvn clean package ``` command to create the jar file,
 The "Dockerfile" is documented with some comments explaining everything.
 The docker-compose.yml file has all services that are being executed. The first one is this spring boot application.
 Other services are the Prometheus and Grafana.
+
+If you are still struggle to execute the run file, alternatively execute this in your terminal:
+
+```
+mvn clean package
+
+docker-compose up --build
+```
 
 # Endpoints
 
