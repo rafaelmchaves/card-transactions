@@ -6,6 +6,7 @@ import com.pismo.transactions.adapter.infrastructure.h2.jpa.entity.AccountJpaEnt
 import com.pismo.transactions.adapter.infrastructure.h2.jpa.AccountJPARepository;
 import com.pismo.transactions.adapter.infrastructure.h2.jpa.TransactionJPARepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,9 @@ public class TransactionControllerIntegrationTest {
 
     }
 
+    @DisplayName("Given a transaction which operation type is 1 ('COMPRA A VISTA') for a valid account id, " +
+            "when we ask to create a transaction, then the transaction is " +
+            "created and saved in the database, and the amount is negative")
     @Test
     public void createTransaction_givenADebitTransaction_ShouldReturn201AndSaveDataInDatabase() throws Exception {
 
@@ -82,6 +86,9 @@ public class TransactionControllerIntegrationTest {
         assertEquals(accountJpaEntity.getId(), savedTransaction.getAccount().getId());
     }
 
+    @DisplayName("Given a transaction which operation type is 4 ('PAGAMENTO') for a valid account id, " +
+            "when we ask to create a transaction, then the transaction is " +
+            "created and saved in the database and the amount is positive")
     @Test
     public void createTransaction_givenACreditTransaction_ShouldReturn201AndSaveDataInDatabase() throws Exception {
 
@@ -108,6 +115,8 @@ public class TransactionControllerIntegrationTest {
         assertEquals(accountJpaEntity.getId(), savedTransaction.getAccount().getId());
     }
 
+    @DisplayName("Given a transaction which operation type is invalid for a valid account id, " +
+            "when we ask to create a transaction, then the transaction is not created and the returned http status is 400" )
     @Test
     public void createTransaction_givenAnOperationTypeNotExist_ShouldReturn400AndDontSaveDataInDatabase() throws Exception {
 
@@ -130,6 +139,8 @@ public class TransactionControllerIntegrationTest {
 
     }
 
+    @DisplayName("Given a transaction which operation type is valid for an invalid account id, " +
+            "when we ask to create a transaction, then the transaction is not created and the returned http status is 400" )
     @Test
     public void createTransaction_givenAnAccountNotExist_ShouldReturn400AndDontSaveDataInDatabase() throws Exception {
 
@@ -151,6 +162,8 @@ public class TransactionControllerIntegrationTest {
         assertEquals(0, transactionJpaEntities.size());
     }
 
+    @DisplayName("Given a transaction without a operation type id for a valid account id, " +
+            "when we ask to create a transaction, then the transaction is not created and the returned http status is 400" )
     @Test
     public void createTransaction_givenOperationTypeIsNotPresent_ShouldReturn400AndDontSaveDataInDatabase() throws Exception {
 
@@ -172,6 +185,8 @@ public class TransactionControllerIntegrationTest {
         assertEquals(0, transactionJpaEntities.size());
     }
 
+    @DisplayName("Given a transaction which operation type is valid and the account id is not present in the body of the request " +
+            "when we ask to create a transaction, then the transaction is not created and the returned http status is 400" )
     @Test
     public void createTransaction_givenAccountIdIsNotPresent_ShouldReturn400AndDontSaveDataInDatabase() throws Exception {
 
@@ -192,6 +207,8 @@ public class TransactionControllerIntegrationTest {
         assertEquals(0, transactionJpaEntities.size());
     }
 
+    @DisplayName("Given a transaction which operation type is valid for a valid account id but amount is not present in the body of the request " +
+            "when we ask to create a transaction, then the transaction is not created and the returned http status is 400" )
     @Test
     public void createTransaction_givenAmountIsNotPresent_ShouldReturn400AndDontSaveDataInDatabase() throws Exception {
 

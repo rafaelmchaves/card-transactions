@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pismo.transactions.adapter.controller.requests.AccountRequest;
 import com.pismo.transactions.adapter.controller.requests.TransactionRequest;
 import com.pismo.transactions.adapter.infrastructure.h2.jpa.AccountJPARepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ public class AccountControllerIntegrationTest {
     @Autowired
     private AccountJPARepository accountJPARepository;
 
+    @DisplayName("Given a documento number, when we ask to create an account, then the account is created and " +
+            "the returned http status is 201, and we check if the account was created by the get endpoint, and its returns ok(200)")
     @Test
     void createAccountAndGetAccount_byDocumentNumber_accountCreated() throws Exception {
         String documentNumber = "31324124";
@@ -61,6 +64,8 @@ public class AccountControllerIntegrationTest {
 
     }
 
+    @DisplayName("Given a request without document number, when we ask for create the account, then the account is not created " +
+            "and the returned http status is 400")
     @Test
     public void createAccount_givenDocumentNumberIsNotPresent_ShouldReturn400AndDontSaveDataInDatabase() throws Exception {
 
@@ -79,6 +84,8 @@ public class AccountControllerIntegrationTest {
         assertEquals(0, accountJpaEntities.size());
     }
 
+    @DisplayName("Given an invalid account id, when we ask for get the account with this id, then the account is not found," +
+            " and we receive a 204 as http status response")
     @Test
     void getAccount_idDoesNotExist_returnNoContentStatusAndEmptyBody() throws Exception {
 
