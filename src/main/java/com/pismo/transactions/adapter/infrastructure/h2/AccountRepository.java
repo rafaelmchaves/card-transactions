@@ -1,7 +1,7 @@
 package com.pismo.transactions.adapter.infrastructure.h2;
 
-import com.pismo.transactions.adapter.infrastructure.h2.entity.AccountJpaEntity;
-import com.pismo.transactions.adapter.infrastructure.h2.repository.AccountJPARepository;
+import com.pismo.transactions.adapter.infrastructure.h2.jpa.entity.AccountJpaEntity;
+import com.pismo.transactions.adapter.infrastructure.h2.jpa.AccountJPARepository;
 import com.pismo.transactions.domain.Account;
 import com.pismo.transactions.domain.ports.AccountPort;
 import lombok.RequiredArgsConstructor;

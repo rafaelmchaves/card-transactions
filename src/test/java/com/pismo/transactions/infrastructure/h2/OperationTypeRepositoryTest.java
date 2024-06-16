@@ -1,9 +1,9 @@
 package com.pismo.transactions.infrastructure.h2;
 
 import com.pismo.transactions.adapter.infrastructure.h2.OperationTypeRepository;
-import com.pismo.transactions.adapter.infrastructure.h2.entity.OperationTypeJpaEntity;
+import com.pismo.transactions.adapter.infrastructure.h2.jpa.entity.OperationTypeJpaEntity;
 import com.pismo.transactions.adapter.infrastructure.h2.mapper.OperationTypeMapper;
-import com.pismo.transactions.adapter.infrastructure.h2.repository.OperationTypeJPARepository;
+import com.pismo.transactions.adapter.infrastructure.h2.jpa.OperationTypeJPARepository;
 import com.pismo.transactions.domain.OperationType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

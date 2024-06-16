@@ -2,9 +2,9 @@ package com.pismo.transactions.infrastructure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pismo.transactions.adapter.controller.requests.TransactionRequest;
-import com.pismo.transactions.adapter.infrastructure.h2.entity.AccountJpaEntity;
-import com.pismo.transactions.adapter.infrastructure.h2.repository.AccountJPARepository;
-import com.pismo.transactions.adapter.infrastructure.h2.repository.TransactionJPARepository;
+import com.pismo.transactions.adapter.infrastructure.h2.jpa.entity.AccountJpaEntity;
+import com.pismo.transactions.adapter.infrastructure.h2.jpa.AccountJPARepository;
+import com.pismo.transactions.adapter.infrastructure.h2.jpa.TransactionJPARepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
