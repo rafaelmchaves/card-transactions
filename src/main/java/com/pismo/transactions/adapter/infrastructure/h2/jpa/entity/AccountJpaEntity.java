@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Builder
 @Getter
-@Table(name = "accounts")
+@Table(name = "accounts", indexes = @Index(columnList = "documentNumber"))
 @Entity
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor
@@ -26,7 +26,7 @@ public class AccountJpaEntity {
     @ColumnDefault("random_uuid()")
     private UUID id;
 
-    @Column(name = "document_number")
+    @Column(name = "document_number", unique = true)
     private String documentNumber;
 
     @Column(name = "creation_on")

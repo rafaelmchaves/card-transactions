@@ -47,13 +47,16 @@ public class TransactionControllerIntegrationTest {
     @BeforeEach
     public void setUp() {
 
+        transactionJPARepository.deleteAll();
+        accountJPARepository.deleteAll();
+
         //save a new account in the database
         accountJpaEntity = AccountJpaEntity.builder()
                 .documentNumber("23184721")
                 .build();
         accountJPARepository.save(accountJpaEntity);
 
-        transactionJPARepository.deleteAll();
+
 
     }
 
