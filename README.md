@@ -7,7 +7,7 @@ Purchase and withdrawal type transactions are recorded with a negative value, wh
 # How to run the application
 
 ## Pre-requisites:
-Install java 17 and docker in your machine
+It's required java 17, maven and docker
 
 ## Run
 I included a run.sh file in the project root folder.
