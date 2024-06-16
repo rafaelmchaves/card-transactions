@@ -1,10 +1,8 @@
-# Rotina de transações
+# Card transaction Routines
 
-Cada portador de cartão (cliente) possui uma conta com seus dados. A cada operação
-realizada pelo cliente uma transação é criada e associada à sua respectiva conta. Cada
-transação possui um tipo (compra à vista, compra parcelada, saque ou pagamento), um
-valor e uma data de criação. Transações de tipo compra e saque são registradas com
-valor negativo, enquanto transações de pagamento são registradas com valor positivo.
+Each cardholder (customer) has an account with their data. For each operation performed by the customer, a transaction is created and associated with their respective account. 
+Each transaction has a type (cash purchase, installment purchase, withdrawal or payment), an amount and a creation date.
+Purchase and withdrawal type transactions are recorded with a negative value, while payment transactions are recorded with a positive value.
 
 # How to run the application
 
@@ -81,7 +79,7 @@ in parts of code that don't change a lot, like OperationType.
 Prometheus and Grafana are very good open source monitoring tools. We can monitor the number of requests per second per endpoint, 
 the response time per endpoint, memory and cpu use etc.
 
-//todo image
+![Image](grafana_image.png)
 
 ## Unit and integration tests
 
@@ -109,19 +107,3 @@ However, it's important to note that if an operation type data is changed or del
 
 Create a distributed cache for Account would be very good strategy. We can use a redis, memcached or Hazelcast.
 An important consideration is everytime an account changes(e.g. client changed for active to inactive status) we need to invalidate the cache.
-
-# Tarefas
-
-1 - ~~Fazer da forma mais simples,controller -> service -> portImpl -> repository~~
-2 - ~~Subir H2~~
-3 - ~~Testar os endpoints de account~~
-4 - ~~Colocar no github~~
-5 - ~~Fazer o endpoint de Transaction~~
-~~6 - Melhorar retorno e código. Além disso, implementar exceções~~
-7 - ~~Criar testes automatizados~~
-8 - Rever código
-9 - ~~Documentar com o swagger~~
-10 - ~~Dockerizar aplicação~~
-11 - Pensar em algo para acrescentar na aplicação - Cache, postgres etc
-12 - Escrever Readme
-13 - Rever tudo o que foi feito
