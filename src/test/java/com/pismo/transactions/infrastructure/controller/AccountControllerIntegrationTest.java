@@ -2,6 +2,7 @@ package com.pismo.transactions.infrastructure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pismo.transactions.adapter.controller.requests.AccountRequest;
+import com.pismo.transactions.adapter.controller.requests.TransactionRequest;
 import com.pismo.transactions.adapter.infrastructure.h2.jpa.AccountJPARepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -58,6 +59,24 @@ public class AccountControllerIntegrationTest {
                         .andExpect(content().json("{\"account_id\": \"" + id + "\"," + "\"document_number\": \"31324124\"}"));
         });
 
+    }
+
+    @Test
+    public void createAccount_givenDocumentNumberIsNotPresent_ShouldReturn400AndDontSaveDataInDatabase() throws Exception {
+
+        // Given
+        final AccountRequest accountRequest = new AccountRequest();
+
+        // When
+        mockMvc.perform(post("/accounts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(accountRequest)))
+                .andExpect(status().is(400))
+                .andExpect(content().json("{\"errors\":[\"Document Number cannot be null\"]}"));
+
+        // Then
+        final var accountJpaEntities = accountJPARepository.findAll();
+        assertEquals(0, accountJpaEntities.size());
     }
 
     @Test

@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Setter
 public class AccountRequest implements Serializable {
 
-    @NotBlank(message = "Document Number is required")
+    @NotBlank(message = "Document Number cannot be null")
     @JsonProperty("document_number")
     private String documentNumber;
 

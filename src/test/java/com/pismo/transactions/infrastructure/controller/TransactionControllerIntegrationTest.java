@@ -150,4 +150,64 @@ public class TransactionControllerIntegrationTest {
         final var transactionJpaEntities = transactionJPARepository.findAll();
         assertEquals(0, transactionJpaEntities.size());
     }
+
+    @Test
+    public void createTransaction_givenOperationTypeIsNotPresent_ShouldReturn400AndDontSaveDataInDatabase() throws Exception {
+
+        final var amount = BigDecimal.valueOf(45.78);
+        // Given
+        TransactionRequest transactionRequest = TransactionRequest.builder().amount(amount)
+                .accountId(UUID.randomUUID().toString())
+                .build();
+
+        // When
+        mockMvc.perform(post("/transactions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(transactionRequest)))
+                .andExpect(status().is(400))
+                .andExpect(content().json("{\"errors\":[\"Operation type cannot be null\"]}"));
+
+        // Then
+        final var transactionJpaEntities = transactionJPARepository.findAll();
+        assertEquals(0, transactionJpaEntities.size());
+    }
+
+    @Test
+    public void createTransaction_givenAccountIdIsNotPresent_ShouldReturn400AndDontSaveDataInDatabase() throws Exception {
+
+        final var amount = BigDecimal.valueOf(45.78);
+        // Given
+        TransactionRequest transactionRequest = TransactionRequest.builder().amount(amount)
+                .operationTypeId(4).build();
+
+        // When
+        mockMvc.perform(post("/transactions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(transactionRequest)))
+                .andExpect(status().is(400))
+                .andExpect(content().json("{\"errors\":[\"Account id cannot be null\"]}"));
+
+        // Then
+        final var transactionJpaEntities = transactionJPARepository.findAll();
+        assertEquals(0, transactionJpaEntities.size());
+    }
+
+    @Test
+    public void createTransaction_givenAmountIsNotPresent_ShouldReturn400AndDontSaveDataInDatabase() throws Exception {
+
+        // Given
+        TransactionRequest transactionRequest = TransactionRequest.builder()
+                .accountId(UUID.randomUUID().toString()).operationTypeId(4).build();
+
+        // When
+        mockMvc.perform(post("/transactions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(transactionRequest)))
+                .andExpect(status().is(400))
+                .andExpect(content().json("{\"errors\":[\"Amount cannot be null\"]}"));
+
+        // Then
+        final var transactionJpaEntities = transactionJPARepository.findAll();
+        assertEquals(0, transactionJpaEntities.size());
+    }
 }

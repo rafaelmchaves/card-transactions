@@ -42,7 +42,7 @@ public class AccountController {
     @Operation(summary = "Find the account by account Id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Account found"),
-            @ApiResponse(responseCode = "204", description = "No content was found for this account id", content = {})
+            @ApiResponse(responseCode = "204", description = "No content was found for this account id")
     })
     public ResponseEntity<AccountResponse> getAccount(@PathVariable String accountId) {
         final var accountOptional = this.accountUseCase.getAccount(accountId);
