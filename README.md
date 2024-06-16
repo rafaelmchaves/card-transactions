@@ -36,15 +36,79 @@ http://localhost:8080/swagger-ui/index.html#/
 
 # Decisions
 
-## h2
+## Project structure
+
+I created the project structure based in clean architecture and hexagonal arch.
+Since it's a small project I didn't create many layers and a complex structure of directories.
+
+```
+-- adapter
+     | -- controller
+     | -- infrastructure
+            | -- h2
+                  | -- repository
+                  | -- entity
+-- domain
+     | -- service
+     | -- ports
+     
+ ```
+
+The endpoints are in the controller layer. These endpoints call the service that are in the domain layer.
+
+These services can call domain classes and infrastructure layer. To access an implementation in infrastructure layer, the
+services must call the interface Port. The idea is each interface port has at least one implementation.
+In our case, Port interfaces are implemented by Repository classes.
+For example, we have the `AccountPort`. The implementation of this interface is `AccountRepository`. `AccountRepository` has its own H2 implementation
+of how to create and find an account.
+
+If in the future, we want to create a specific microservice for account, so we change the implementation of `AccountPort` from `AccountRepository` to `AccountRest`. But the interface don't change.
+We continue call the getAccount interface method in the domain. So, if the change was in the infrastructure technology, so the domain should not change, in theory.
+
+
+## H2
+
+H2 is an embedded in-memory SQL database that is great for use in case of testing applications. I chose this database because it reduces development time since we don't need to create the schemas, just create the JPA entities.
+However, it is not a good use case for real applications.
 
 ## Caffeine
 
+Since I created a single server application, I chose Caffeine as cache technology. I'm using the caffeine cache for local cache 
+in parts of code that don't change a lot, like OperationType.
+
 ## Prometheus and Grafana
+
+Prometheus and Grafana are very good open source monitoring tools. We can monitor the number of requests per second per endpoint, 
+the response time per endpoint, memory and cpu use etc.
+
+//todo image
 
 ## Unit and integration tests
 
+I created unit tests for domain and repository classes. 
+
+I created the integration test using mock mvc, calling the endpoint directly and asserting if the response status and body is correct as expected.
+In addition to it, we are checking if the data(new transactions and accounts) was saved correctly.
+
 # Future
+
+I think if we want to deploy this application in production environment we need to do some modifications.
+
+## Database
+
+First of all, change the H2 database to other one.
+The idea is to choose a database that it's not in memory, but it could be deployed in a cloud service, for example.
+I would choose a SQL database in this case since we want a database that guarantees the consistency instead of availability in according to CAP Theorem.
+Some options of SQL database are postgres, Mysql, Oracle and cockroachDB. The last two was designed to be distributed and scale horizontally.
+
+## Cache
+
+Operation type has local cache, which means that each server of application will have the own cache in memory. So, a server could be cached an information, while other server no.
+But I believe it's not a problem in this case, since that we have few operation types values, and it not uses to change a lot. 
+However, it's important to note that if an operation type data is changed or deleted, it's necessary to wait the TTL expire to visualize the modification.
+
+Create a distributed cache for Account would be very good strategy. We can use a redis, memcached or Hazelcast.
+An important consideration is everytime an account changes(e.g. client changed for active to inactive status) we need to invalidate the cache.
 
 # Tarefas
 
