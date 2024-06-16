@@ -51,6 +51,3 @@ public class CustomExceptionHandler {
     }
 
 }
-
-record ErrorMessage (String message, String errorCode) {
-}
