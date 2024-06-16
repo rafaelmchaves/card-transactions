@@ -47,7 +47,7 @@ http://localhost:8080/swagger-ui/index.html#/
 ## Project structure
 
 I created the project structure based in clean architecture and hexagonal arch.
-Since it's a small project I didn't create many layers and a complex structure of directories.
+Since it's a small project, I didn't create many layers and a complex structure of directories.
 
 ```
 -- adapter
@@ -62,15 +62,15 @@ Since it's a small project I didn't create many layers and a complex structure o
      
  ```
 
-The endpoints are in the controller layer. These endpoints call the service that are in the domain layer.
+The endpoints are in the controller layer. These endpoints call the useCases classes that are in the domain layer.
 
-These services can call domain classes and infrastructure layer. To access an implementation in infrastructure layer, the
+These useCases can call domain classes and infrastructure layer. To access an implementation in infrastructure layer, the
 services must call the interface Port. The idea is each interface port has at least one implementation.
 In our case, Port interfaces are implemented by Repository classes.
 For example, we have the `AccountPort`. The implementation of this interface is `AccountRepository`. `AccountRepository` has its own H2 implementation
 of how to create and find an account.
 
-If in the future, we want to create a specific microservice for account, so we change the implementation of `AccountPort` from `AccountRepository` to `AccountRest`. But the interface don't change.
+If in the future, we want to create a specific microservice for account management, so we change the implementation of `AccountPort` from `AccountRepository` to `AccountRest`. But the interface don't change.
 We continue call the getAccount interface method in the domain. So, if the change was in the infrastructure technology, so the domain should not change, in theory.
 
 ## Database
@@ -84,11 +84,11 @@ For example, if tomorrow it is necessary to add the cashback operation type, sim
 insert into operation_types (id, description, multiplier) values (5, 'CASHBACK',  1)
 ```
 
-There is a file called `data.sql` that insert 4 operation types when the application starts.
+There is a file called `data.sql` that inserts 4 operation types when the application starts.
 
-Another change I made to the proposed data model structure was to change the account ID type. I changed it from Long to UUID. 
+Another change I made to the proposed data model structure was to change the account ID type from Long to UUID. 
 This is important so that we don't need to expose the data customers.
-Since the ID is a sequence number, it's easy for someone to call the get accounts/{accountId} endpoint many times and find out all the customer data.
+Since the ID is a sequence number, it's easy for someone to call the get accounts/{accountId} endpoint many times in sequence and find out all customers and their data.
 So, using UUID we prevent our server from this type of attack. However, UUID are less performant.
 
 ## H2
@@ -101,7 +101,7 @@ To open the H2 console (user and password are in the application.properties):
 ```
 http://localhost:8080/h2-console/
 ```
-the jdbc url(it's in the application.properties too): `jdbc:h2:mem:testdb`
+the jdbc url(it's in the application.properties as well): `jdbc:h2:mem:testdb`
 
 ![H2 CONSOLE](h2-console.png)
 
@@ -146,13 +146,13 @@ I think if we want to deploy this application in production environment we need 
 First of all, change the H2 database to other one.
 The idea is to choose a database that it's not in memory, but it could be deployed in a cloud service, for example.
 I would choose a SQL database in this case since we want a database that guarantees the consistency instead of availability in according to CAP Theorem.
-Some options of SQL database are postgres, Mysql, Oracle and cockroachDB. The last two was designed to be distributed and scale horizontally.
+Some options of SQL database are postgres, Mysql, Oracle and cockroachDB. The last two are designed to be distributed and scaled horizontally.
 
 ## Cache
 
-Operation type has local cache, which means that each server of application will have the own cache in memory. So, a server could be cached an information, while other server no.
-But I believe it's not a problem in this case, since that we have few operation types values, and it not uses to change a lot. 
-However, it's important to note that if an operation type data is changed or deleted, it's necessary to wait the TTL expire to visualize the modification.
+The operation type is cached locally, which means that each application server will have its own cache in memory. So, one server may have information cached while another server does not.
+But I believe that this is not a problem in this case, since we have few operation types values, and they don't usually change much. 
+However, it's important to note that if an operation type data is changed or deleted, it's necessary to wait for the TTL to expire to view the modification.
 
 Create a distributed cache for Account would be a very good strategy. We can use a redis, memcached or Hazelcast.
 An important consideration is everytime an account changes(e.g. client changed for active to inactive status) we need to invalidate the cache.
