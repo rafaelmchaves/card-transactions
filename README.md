@@ -1,7 +1,7 @@
 # Card transaction Routines
 
 Each cardholder (customer) has an account with their data. For each operation performed by the customer, a transaction is created and associated with their respective account. 
-Each transaction has a type (cash purchase, installment purchase, withdrawal or payment), an amount and a creation date.
+Each transaction has a type ("COMPRA A VISTA", "COMPRA PARCELADA", "SAQUE" or "PAGAMENTO"), an amount and a creation date.
 Purchase and withdrawal type transactions are recorded with a negative value, while payment transactions are recorded with a positive value.
 
 # How to run the application
@@ -74,10 +74,28 @@ For example, if tomorrow it is necessary to add the cashback operation type, sim
 insert into operation_types (id, description, multiplier) values (5, 'CASHBACK',  1)
 ```
 
+There is a file called `data.sql` that insert 4 operation types when the application starts.
+
+Another change I made to the proposed data model structure was to change the account ID type. I changed it from Long to UUID. 
+This is important so that we don't need to expose the data customers.
+Since the ID is a sequence number, it's easy for someone to call the get accounts/{accountId} endpoint many times and find out all the customer data.
+So, using UUID we prevent our server from this type of attack. However, UUID are less performant.
+
 ## H2
 
 H2 is an embedded in-memory SQL database that is great for use in case of testing applications. I chose this database because it reduces development time since we don't need to create the schemas, just create the JPA entities.
 However, it is not a good use case for real applications.
+
+To open the H2 console (user and password are in the application.properties):
+
+```
+http://localhost:8080/h2-console/
+```
+the jdbc url(it's in the application.properties too): `jdbc:h2:mem:testdb`
+
+![H2 CONSOLE](h2-console.png)
+
+There is a file called `data.sql` that insert 4 operation types when the application starts.
 
 ## Caffeine
 
@@ -89,6 +107,17 @@ in parts of code that don't change a lot, like OperationType.
 Prometheus and Grafana are very good open source monitoring tools. We can monitor the number of requests per second per endpoint, 
 the response time per endpoint, memory and cpu use etc.
 
+To access Prometheus:
+```
+http://localhost:9090/
+```
+
+To access Grafana: 
+```
+http://localhost:3000/login
+```
+
+Grafana dashboard that I created:
 ![Image](grafana_image.png)
 
 ## Unit and integration tests
@@ -115,5 +144,5 @@ Operation type has local cache, which means that each server of application will
 But I believe it's not a problem in this case, since that we have few operation types values, and it not uses to change a lot. 
 However, it's important to note that if an operation type data is changed or deleted, it's necessary to wait the TTL expire to visualize the modification.
 
-Create a distributed cache for Account would be very good strategy. We can use a redis, memcached or Hazelcast.
+Create a distributed cache for Account would be a very good strategy. We can use a redis, memcached or Hazelcast.
 An important consideration is everytime an account changes(e.g. client changed for active to inactive status) we need to invalidate the cache.
