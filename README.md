@@ -16,7 +16,7 @@ I included a run.sh file in the project root folder.
 To run the application, just run this command in the terminal:
 
 ```
-/.run.sh
+./run.sh
 ```
 
 Maybe you need to execute this command before run the run.sh file, in order to grant permission to this file: 
