@@ -1,6 +1,7 @@
 package com.pismo.transactions.usecases;
 
 import com.pismo.transactions.domain.Account;
+import com.pismo.transactions.domain.exceptions.DuplicatedDocumentNumberException;
 import com.pismo.transactions.domain.ports.AccountPort;
 import com.pismo.transactions.domain.usecases.AccountUseCase;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +35,7 @@ public class AccountUseCaseTest {
 
     @Test
     public void createAccount_accountData_accountCreated() {
+        when(accountPort.getAccountByDocumentNumber(account.getDocumentNumber())).thenReturn(Optional.empty());
         when(accountPort.save(account)).thenReturn(account.getId());
 
         Account createdAccount = accountUseCase.createAccount(account);
@@ -42,6 +44,14 @@ public class AccountUseCaseTest {
             assertEquals(account.getId(), createdAccount.getId());
             verify(accountPort, times(1)).save(account);
         });
+    }
+
+    @Test
+    public void createAccount_documentNumberAlreadyExist_throwDuplicatedDocumentNumberException() {
+        when(accountPort.getAccountByDocumentNumber(account.getDocumentNumber())).thenReturn(Optional.of(account));
+
+        assertThrows(DuplicatedDocumentNumberException.class, () -> accountUseCase.createAccount(account));
+        verify(accountPort, times(0)).save(account);
     }
 
     @Test

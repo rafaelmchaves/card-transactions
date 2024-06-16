@@ -3,7 +3,7 @@ package com.pismo.transactions.common.exceptions;
 import lombok.Getter;
 
 @Getter
-public class CustomException extends RuntimeException{
+public class CustomException extends RuntimeException {
 
     private final String message;
     private final String code;

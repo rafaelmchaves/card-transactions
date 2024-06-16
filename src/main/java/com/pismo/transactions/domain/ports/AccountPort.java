@@ -10,4 +10,6 @@ public interface AccountPort {
     String save(Account account);
 
     Optional<Account> getAccount(UUID id);
+
+    Optional<Account> getAccountByDocumentNumber(String documentNumber);
 }

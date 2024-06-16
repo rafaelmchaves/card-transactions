@@ -36,7 +36,7 @@ public class AccountControllerIntegrationTest {
     @Autowired
     private AccountJPARepository accountJPARepository;
 
-    @DisplayName("Given a documento number, when we ask to create an account, then the account is created and " +
+    @DisplayName("Given a document number, when we ask to create an account, then the account is created and " +
             "the returned http status is 201, and we check if the account was created by the get endpoint, and its returns ok(200)")
     @Test
     void createAccountAndGetAccount_byDocumentNumber_accountCreated() throws Exception {
@@ -60,6 +60,34 @@ public class AccountControllerIntegrationTest {
                 mockMvc.perform(get("/accounts/" + id.toString()))
                         .andExpect(status().isOk())
                         .andExpect(content().json("{\"account_id\": \"" + id + "\"," + "\"document_number\": \"31324124\"}"));
+        });
+
+    }
+
+    @DisplayName("Given a duplicated document number, when we ask to create an account, then the account is not created and " +
+            "the returned http status is 400")
+    @Test
+    void createAccount_byADuplicatedDocumentNumber_accountNotCreated() throws Exception {
+        String documentNumber = "31324124";
+        final AccountRequest accountRequest = new AccountRequest();
+        accountRequest.setDocumentNumber(documentNumber);
+
+        mockMvc.perform(post("/accounts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(accountRequest)));
+
+        mockMvc.perform(post("/accounts")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(accountRequest)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json("{\"message\":\"Document number already exists in our base\",\"errorCode\":\"ACC_02\"}"));
+
+        var accountList = accountJPARepository.findAll();
+        assertAll(() -> {
+            assertNotNull(accountList);
+            assertEquals(1, accountList.size());
+            assertNotNull(accountList.get(0).getCreation());
+            assertEquals(documentNumber, accountList.get(0).getDocumentNumber());
         });
 
     }

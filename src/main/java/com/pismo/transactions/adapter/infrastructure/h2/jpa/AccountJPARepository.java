@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface AccountJPARepository extends ListCrudRepository<AccountJpaEntity, UUID> {
 
+    AccountJpaEntity findByDocumentNumber(String documentNumber);
 }

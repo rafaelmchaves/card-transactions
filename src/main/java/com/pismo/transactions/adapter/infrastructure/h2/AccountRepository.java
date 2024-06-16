@@ -35,4 +35,11 @@ public class AccountRepository implements AccountPort {
         return account != null ? Optional.of(Account.builder().id(account.getId().toString()).documentNumber(account.getDocumentNumber()).build())
                                : Optional.empty();
     }
+
+    @Override
+    public Optional<Account> getAccountByDocumentNumber(String documentNumber) {
+        var account = accountJPARepository.findByDocumentNumber(documentNumber);
+        return account != null ? Optional.of(Account.builder().id(account.getId().toString()).documentNumber(account.getDocumentNumber()).build())
+                : Optional.empty();
+    }
 }
