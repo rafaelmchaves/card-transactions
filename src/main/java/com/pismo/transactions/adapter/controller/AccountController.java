@@ -1,5 +1,6 @@
 package com.pismo.transactions.adapter.controller;
 
+import com.pismo.transactions.adapter.controller.mapper.AccountMapper;
 import com.pismo.transactions.adapter.controller.requests.AccountRequest;
 import com.pismo.transactions.adapter.controller.response.AccountResponse;
 import com.pismo.transactions.common.exceptions.ErrorMessage;
@@ -24,6 +25,8 @@ public class AccountController {
 
     private final AccountUseCase accountUseCase;
 
+    private final AccountMapper accountMapper;
+
     @PostMapping("/accounts")
     @Operation(summary = "Create a new account,so it would be possible to do a transaction")
     @ApiResponses(value = {
@@ -34,8 +37,7 @@ public class AccountController {
     public ResponseEntity<AccountResponse> createAccount(@Valid @RequestBody AccountRequest accountRequest) {
         final var account = accountUseCase.createAccount(Account.builder().documentNumber(accountRequest.getDocumentNumber()).build());
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(AccountResponse.builder().id(account.getId())
-                        .documentNumber(account.getDocumentNumber()).build());
+                .body(accountMapper.convert(account));
     }
 
     @GetMapping("/accounts/{accountId}")
@@ -48,7 +50,7 @@ public class AccountController {
         final var accountOptional = this.accountUseCase.getAccount(accountId);
         return accountOptional.map(account ->
                         ResponseEntity.ok(
-                                AccountResponse.builder().id(account.getId()).documentNumber(account.getDocumentNumber()).build()))
+                                accountMapper.convert(account)))
                 .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
