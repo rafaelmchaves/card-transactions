@@ -1,5 +1,6 @@
 package com.pismo.transactions.adapter.controller;
 
+import com.pismo.transactions.adapter.controller.mapper.TransactionMapper;
 import com.pismo.transactions.adapter.controller.requests.TransactionRequest;
 import com.pismo.transactions.common.exceptions.ErrorMessage;
 import com.pismo.transactions.domain.Account;
@@ -27,6 +28,8 @@ public class TransactionController {
 
     private final TransactionUseCase transactionUseCase;
 
+    private final TransactionMapper transactionMapper;
+
     @PostMapping("/transactions")
     @Operation(summary = "Create a new transaction for a particular account.")
     @ApiResponses(value = {
@@ -36,11 +39,10 @@ public class TransactionController {
     })
     public ResponseEntity<Void> createTransaction(@Valid @RequestBody TransactionRequest transactionRequest) {
 
-        transactionUseCase.createTransaction(Transaction.builder().amount(transactionRequest.getAmount())
-                .operationType(OperationType.builder().id(transactionRequest.getOperationTypeId()).build())
-                        .account(Account.builder().id(transactionRequest.getAccountId()).build())
-                .build());
+        transactionUseCase.createTransaction(transactionMapper.convert(transactionRequest));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+
 
 }
