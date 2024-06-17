@@ -24,9 +24,9 @@ Maybe you need to execute this command before run the run.sh file, in order to g
 chmod +x run.sh
 ```
 
-The run.sh file execute ```mvn clean package ``` command to create the jar file, then execute the docker file.
+The run.sh file executes ```mvn clean package ``` command to create the jar file, then executes the docker file.
 The "Dockerfile" is documented with some comments explaining everything.
-The docker-compose.yml file has all services that are being executed. The first one is this spring boot application.
+The docker-compose.yml file has all services that are executed. The first one is this spring boot application.
 Other services are the Prometheus and Grafana.
 
 If you are still struggle to execute the run file, alternatively execute this in your terminal:
@@ -39,7 +39,7 @@ docker-compose up --build
 
 # Endpoints
 
-To access the documentation of the endpoints using the link of swagger:
+To access the documentation of the endpoints, use the swagger link:
 http://localhost:8080/swagger-ui/index.html#/
 
 # Decisions
