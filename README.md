@@ -19,7 +19,7 @@ To run the application, just run this command in the terminal:
 ./run.sh
 ```
 
-Maybe you need to execute this command before run the run.sh file, in order to grant permission to this file: 
+Maybe you need to execute this command below before run the run.sh file, in order to grant permission to this file: 
 ```
 chmod +x run.sh
 ```
