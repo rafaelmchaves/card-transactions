@@ -16,6 +16,7 @@ public class TransactionJpaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter
     private Long id;
 
     @ManyToOne
@@ -25,6 +26,9 @@ public class TransactionJpaEntity {
     private OperationTypeJpaEntity operationType;
 
     private BigDecimal amount;
+
+    private BigDecimal balance;
+
     private LocalDateTime eventDate;
 
 }

@@ -1,5 +1,6 @@
 package com.pismo.transactions.infrastructure.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pismo.transactions.adapter.controller.requests.TransactionRequest;
 import com.pismo.transactions.adapter.infrastructure.h2.jpa.entity.AccountJpaEntity;
@@ -17,8 +18,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -59,6 +62,105 @@ public class TransactionControllerIntegrationTest {
 
 
     }
+
+    @Test
+    public void createTransaction_3DebitOperationAndOneCreditOperation_dischardDone() throws Exception {
+        final var amount = BigDecimal.valueOf(50);
+        // Given
+        TransactionRequest transactionRequest1 = TransactionRequest.builder().amount(amount)
+                .accountId(accountJpaEntity.getId().toString()).operationTypeId(1)
+                .build();
+
+        mockMvc.perform(post("/transactions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(transactionRequest1)))
+                .andExpect(status().isCreated());
+
+        // Given
+        TransactionRequest transactionRequest2 = TransactionRequest.builder().amount(BigDecimal.valueOf(23.5))
+                .accountId(accountJpaEntity.getId().toString()).operationTypeId(1)
+                .build();
+
+        performTransaction(transactionRequest2);
+        TransactionRequest transactionRequest3 = TransactionRequest.builder().amount(BigDecimal.valueOf(18.7))
+                .accountId(accountJpaEntity.getId().toString()).operationTypeId(1)
+                .build();
+
+        performTransaction(transactionRequest3);
+
+        TransactionRequest transactionRequest4 = TransactionRequest.builder().amount(BigDecimal.valueOf(60))
+                .accountId(accountJpaEntity.getId().toString()).operationTypeId(4)
+                .build();
+
+        performTransaction(transactionRequest4);
+
+        final var transactionJpaEntities = transactionJPARepository.findAll();
+
+        assertAll(() -> {
+            assertEquals(BigDecimal.valueOf(0.00).setScale(2, RoundingMode.HALF_UP), transactionJpaEntities.get(0).getBalance());
+            assertEquals(BigDecimal.valueOf(-13.5).setScale(2, RoundingMode.HALF_UP), transactionJpaEntities.get(1).getBalance());
+            assertEquals(BigDecimal.valueOf(-18.7).setScale(2, RoundingMode.HALF_UP), transactionJpaEntities.get(2).getBalance());
+            assertEquals(BigDecimal.valueOf(0).setScale(2, RoundingMode.HALF_UP), transactionJpaEntities.get(3).getBalance());
+        });
+
+    }
+
+    @Test
+    public void createTransaction_3DebitOperationAnd2CreditOperation_dischardDone() throws Exception {
+        final var amount = BigDecimal.valueOf(50);
+        // Given
+        TransactionRequest transactionRequest1 = TransactionRequest.builder().amount(amount)
+                .accountId(accountJpaEntity.getId().toString()).operationTypeId(1)
+                .build();
+
+        mockMvc.perform(post("/transactions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(transactionRequest1)))
+                .andExpect(status().isCreated());
+
+        // Given
+        TransactionRequest transactionRequest2 = TransactionRequest.builder().amount(BigDecimal.valueOf(23.5))
+                .accountId(accountJpaEntity.getId().toString()).operationTypeId(1)
+                .build();
+
+        performTransaction(transactionRequest2);
+        TransactionRequest transactionRequest3 = TransactionRequest.builder().amount(BigDecimal.valueOf(18.7))
+                .accountId(accountJpaEntity.getId().toString()).operationTypeId(1)
+                .build();
+
+        performTransaction(transactionRequest3);
+
+        TransactionRequest transactionRequest4 = TransactionRequest.builder().amount(BigDecimal.valueOf(60))
+                .accountId(accountJpaEntity.getId().toString()).operationTypeId(4)
+                .build();
+
+        performTransaction(transactionRequest4);
+
+        TransactionRequest transactionRequest5 = TransactionRequest.builder().amount(BigDecimal.valueOf(100))
+                .accountId(accountJpaEntity.getId().toString()).operationTypeId(4)
+                .build();
+
+        performTransaction(transactionRequest5);
+
+        final var transactionJpaEntities = transactionJPARepository.findAll();
+
+        assertAll(() -> {
+            assertEquals(BigDecimal.valueOf(0.00).setScale(2, RoundingMode.HALF_UP), transactionJpaEntities.get(0).getBalance());
+            assertEquals(BigDecimal.valueOf(0).setScale(2, RoundingMode.HALF_UP), transactionJpaEntities.get(1).getBalance());
+            assertEquals(BigDecimal.valueOf(0).setScale(2, RoundingMode.HALF_UP), transactionJpaEntities.get(2).getBalance());
+            assertEquals(BigDecimal.valueOf(0).setScale(2, RoundingMode.HALF_UP), transactionJpaEntities.get(3).getBalance());
+            assertEquals(BigDecimal.valueOf(67.8).setScale(2, RoundingMode.HALF_UP), transactionJpaEntities.get(4).getBalance());
+        });
+
+    }
+
+    private void performTransaction(TransactionRequest transactionRequest) throws Exception {
+        mockMvc.perform(post("/transactions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(transactionRequest)))
+                .andExpect(status().isCreated());
+    }
+
 
     @DisplayName("Given a transaction which operation type is 1 ('COMPRA A VISTA') for a valid account id, " +
             "when we ask to create a transaction, then the transaction is " +

@@ -17,6 +17,9 @@ public class Transaction {
     private BigDecimal amount;
     private Account account;
 
+    @Setter
+    private BigDecimal balance;
+
     public BigDecimal getAmount() {
         if (operationType != null) {
             return amount.multiply(BigDecimal.valueOf(operationType.getMultiplier()));
